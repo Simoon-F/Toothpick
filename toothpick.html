@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>F12 Console</title>
+	</head>
+	<script>
+		/**
+			15个任意物品（可以是火柴牙签poker）
+			以下按牙签为例
+			
+			将15根牙签
+			分成三行
+			每行自上而下（其实方向不限）分别是3、5、7根
+			
+			安排两个玩家，每人可以在一轮内，在任意行拿任意根牙签，但不能跨行
+			
+			拿最后一根牙签的人即为输家
+		*/
+		var arr = [3, 5, 7]; // 3、5、7牙签数组
+		var gamePlayer = 1; // 默认玩家1开始
+
+		// 获取1到num之间的随机数
+		function getRandomNumber(num) {
+			return Math.floor(Math.random() * num + 1)
+		}
+
+		// 随机获取要抽签的行
+		function getRandomDraw() {
+			return getRandomNumber(arr.length) - 1;
+		}
+
+		// 获取首次行
+		var drawLine = getRandomDraw();
+		console.log("获取首次要执行的牙签行：" + drawLine + ", 该牙签行目：" + arr[drawLine]);
+
+		while (true) {
+
+			// 玩家获取牙签数
+			var num = getRandomNumber(arr[drawLine]);
+
+			if (num === "" || num == null || isNaN(num) || num < 1 || num > arr[drawLine]) {
+				console.log("牙签数错误:" + num + ", 跳过本次循环");
+				continue;
+			}
+			
+			// 把玩家抽取到的牙签数从牙签数组行中减掉
+			arr[drawLine] -= num;
+			console.log("减掉" + "【" + gamePlayer + "】号玩家抽取的牙签数：" + num + ", 该牙签行剩余数目：" + arr[drawLine]);
+
+			// 判断行是否还有牙签，有则继续下一个玩家抽签，否则过滤移除，重新抽取新行
+			if (arr[drawLine] == 0) {
+				
+				arr = arr.filter(item => item != 0); // 过滤掉下标为0的数组，并重新赋值arr
+				
+				drawLine = getRandomDraw();
+				
+				console.log("重新获取要抽签的牙签行：" + drawLine);
+			}
+			
+			if (arr.length > 0) {
+				gamePlayer = (gamePlayer == 1) ? 2 : 1; // 更换玩家
+			} else {
+				break;
+			}
+		}
+		console.log("【" + gamePlayer + "】号玩家输了");
+		alert("【" + gamePlayer + "】号玩家输了");
+	</script>
+	<body>F12 Console</body>
+</html>
